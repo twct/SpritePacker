@@ -46,6 +46,9 @@ void SpriteGrid::add(const Gio::Application::type_vec_files &files)
         auto sourcePixbuf = Gdk::Pixbuf::create_from_file(file->get_path());
         auto sourceWidth = sourcePixbuf->get_width();
         auto sourceHeight = sourcePixbuf->get_height();
+        auto rowStride = sourcePixbuf->get_rowstride();
+        auto pixelData = sourcePixbuf->get_pixels();
+        auto pixelLen = sourceWidth * sourceHeight * rowStride;
 
         if (sourceWidth > m_spriteSize || sourceHeight > m_spriteSize) {
             if (sourceWidth > sourceHeight) {
