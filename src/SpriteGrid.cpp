@@ -1,6 +1,7 @@
 #include <gtkmm-3.0/gtkmm/image.h>
 #include <SpriteGrid.h>
 #include <iostream>
+#include <Sprite.h>
 
 int closest(int a, int b)
 {
@@ -50,22 +51,26 @@ void SpriteGrid::add(const Gio::Application::type_vec_files &files)
         auto pixelData = sourcePixbuf->get_pixels();
         auto pixelLen = sourceWidth * sourceHeight * rowStride;
 
-        if (sourceWidth > m_spriteSize || sourceHeight > m_spriteSize) {
-            if (sourceWidth > sourceHeight) {
-                m_spriteSize = closest(sourceWidth, 2);
-            }
-            else {
-                m_spriteSize = closest(sourceHeight, 2);
-            }
-        }
+        auto sprite = Gtk::make_managed<Sprite>(file->get_path(), file->get_basename(), m_column, m_row);
+        sprite->show();
+        m_grid.attach(*sprite, m_column, m_row);
 
-        std::cout << "Sprite Size: " << m_spriteSize << std::endl;
+        // if (sourceWidth > m_spriteSize || sourceHeight > m_spriteSize) {
+        //     if (sourceWidth > sourceHeight) {
+        //         m_spriteSize = closest(sourceWidth, 2);
+        //     }
+        //     else {
+        //         m_spriteSize = closest(sourceHeight, 2);
+        //     }
+        // }
+
+        // std::cout << "Sprite Size: " << m_spriteSize << std::endl;
     
-        auto image = Gtk::make_managed<Gtk::Image>(sourcePixbuf);
-        image->set_tooltip_text(file->get_basename());
-        image->show();
+        // auto image = Gtk::make_managed<Gtk::Image>(sourcePixbuf);
+        // image->set_tooltip_text(file->get_basename());
+        // image->show();
 
-        m_grid.attach(*image, m_column, m_row);
+        // m_grid.attach(*image, m_column, m_row);
         ++m_column;
         #if test
         auto sourcePixbuf = Gdk::Pixbuf::create_from_file(file->get_path());

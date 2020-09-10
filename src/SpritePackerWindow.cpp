@@ -3,6 +3,7 @@
 #include <gtkmm-3.0/gtkmm/image.h>
 #include <SpritePackerWindow.h>
 #include <cairomm/surface.h>
+#include <Sprite.h>
 #include <iostream>
 #include <sstream>
 
@@ -135,12 +136,14 @@ void SpritePackerWindow::on_save_button_clicked()
     auto context = Cairo::Context::create(surface);
 
     auto child = m_grid.grid().get_child_at(0, 0);
-    auto image = dynamic_cast<Gtk::Image*>(child);
+    auto sprite = dynamic_cast<Sprite*>(child);
+    auto image = sprite->image();
+    // auto image = dynamic_cast<Gtk::Image*>(child);
 
     int x = 0;
     int y = 0;
 
-    Gdk::Cairo::set_source_pixbuf(context, image->get_pixbuf(), x, y);
+    Gdk::Cairo::set_source_pixbuf(context, image.get_pixbuf(), x, y);
     context->paint();
     surface->write_to_png("/tmp/test.png");
 
