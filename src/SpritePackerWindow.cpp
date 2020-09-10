@@ -72,6 +72,7 @@ void SpritePackerWindow::set_headerbar_title()
     oss << " — Sprite Packer";
 
     m_headerBar.set_title(Glib::ustring(oss.str()));
+    m_saveButton.set_sensitive(m_modified);
 }
 
 void SpritePackerWindow::on_add_button_clicked()
@@ -157,6 +158,7 @@ void SpritePackerWindow::on_save_button_clicked()
     // context->paint();
     
     surface->write_to_png("/tmp/test.png");
-
+    m_modified = false;
+    set_headerbar_title();
     std::cout << width << "x" << height << std::endl;
 }

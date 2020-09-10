@@ -1,11 +1,28 @@
 #include <Sprite.h>
 #include <iostream>
 
-Sprite::Sprite(const std::string &path, const Glib::ustring &name, const int x, const int y):
-    m_x(x),
-    m_y(y)
+Sprite::Sprite(const std::string &path, const Glib::ustring &name, const int x, const int y)
 {
+    position(x, y);
+
     auto sourcePixbuf = Gdk::Pixbuf::create_from_file(path);
+    auto sourceWidth = sourcePixbuf->get_width();
+    auto sourceHeight = sourcePixbuf->get_height();
+
+    auto pixelData = sourcePixbuf->get_pixels();
+
+    for (int py = 0; py < sourceHeight; ++py) {
+        for (int px = 0; px < sourceWidth; ++px) {
+            int offset = py * sourcePixbuf->get_rowstride() + px * sourcePixbuf->get_n_channels();
+            auto pixel = &pixelData[offset];
+
+            printf("(%i, %i, %i, %i)\n", pixel[0], pixel[1], pixel[2], pixel[3]);
+            if (pixel[3] < 255) {
+                pixel[3] = 100;
+            }
+        }
+    }
+
     m_image = Gtk::Image(sourcePixbuf);
 
     set_tooltip_text(name);
@@ -15,6 +32,12 @@ Sprite::Sprite(const std::string &path, const Glib::ustring &name, const int x, 
 
     add(m_image);
     show_all();
+}
+
+void Sprite::position(const int x, const int y)
+{
+    m_x = x;
+    m_y = y;
 }
 
 Gtk::Image *Sprite::image()
