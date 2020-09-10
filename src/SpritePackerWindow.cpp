@@ -135,16 +135,27 @@ void SpritePackerWindow::on_save_button_clicked()
     auto surface = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, width, height);
     auto context = Cairo::Context::create(surface);
 
-    auto child = m_grid.grid().get_child_at(0, 0);
-    auto sprite = dynamic_cast<Sprite*>(child);
-    auto image = sprite->image();
-    // auto image = dynamic_cast<Gtk::Image*>(child);
+    for (auto &child : m_grid.grid().get_children()) {
+        auto sprite = dynamic_cast<Sprite*>(child);
+        auto image = sprite->image();
+        int x = sprite->x() * spriteSize;
+        int y = sprite->y() * spriteSize;
+        Gdk::Cairo::set_source_pixbuf(context, image->get_pixbuf(), x, y);
+        context->paint();
+    }
 
-    int x = 0;
-    int y = 0;
+    // auto child = m_grid.grid().get_child_at(0, 0);
+    // auto sprite = dynamic_cast<Sprite*>(child);
+    // auto image = sprite->image();
 
-    Gdk::Cairo::set_source_pixbuf(context, image.get_pixbuf(), x, y);
-    context->paint();
+    // // auto image = dynamic_cast<Gtk::Image*>(child);
+
+    // int x = 0;
+    // int y = 0;
+
+    // Gdk::Cairo::set_source_pixbuf(context, image->get_pixbuf(), x, y);
+    // context->paint();
+    
     surface->write_to_png("/tmp/test.png");
 
     std::cout << width << "x" << height << std::endl;

@@ -12,7 +12,7 @@ private:
     int m_x, m_y;
 public:
     Sprite(const std::string &path, const Glib::ustring &name, const int x, const int y);
-    const Gtk::Image &image() const;
+    Gtk::Image *image();
     const int x() const;
     const int y() const;
     bool on_motion_notify(GdkEventMotion *event);

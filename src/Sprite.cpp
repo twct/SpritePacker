@@ -17,9 +17,9 @@ Sprite::Sprite(const std::string &path, const Glib::ustring &name, const int x, 
     show_all();
 }
 
-const Gtk::Image &Sprite::image() const
+Gtk::Image *Sprite::image()
 {
-    return m_image;
+    return &m_image;
 }
 
 const int Sprite::x() const

@@ -64,6 +64,8 @@ void SpriteGrid::add(const Gio::Application::type_vec_files &files)
         //     }
         // }
 
+        m_spriteSize = 64;
+
         // std::cout << "Sprite Size: " << m_spriteSize << std::endl;
     
         // auto image = Gtk::make_managed<Gtk::Image>(sourcePixbuf);
