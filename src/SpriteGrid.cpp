@@ -3,7 +3,7 @@
 #include <iostream>
 #include <Sprite.h>
 
-int closest(int a, int b)
+inline int closest(int a, int b)
 {
     return (a + b / 2) / b * b;
 }
@@ -55,49 +55,11 @@ void SpriteGrid::add(const Gio::Application::type_vec_files &files)
         sprite->show();
         m_grid.attach(*sprite, m_column, m_row);
 
-        // if (sourceWidth > m_spriteSize || sourceHeight > m_spriteSize) {
-        //     if (sourceWidth > sourceHeight) {
-        //         m_spriteSize = closest(sourceWidth, 2);
-        //     }
-        //     else {
-        //         m_spriteSize = closest(sourceHeight, 2);
-        //     }
-        // }
+        if (sprite->size() > m_spriteSize) {
+            m_spriteSize = closest(sprite->size(), 2);
+        }
 
-        m_spriteSize = 64;
-
-        // std::cout << "Sprite Size: " << m_spriteSize << std::endl;
-    
-        // auto image = Gtk::make_managed<Gtk::Image>(sourcePixbuf);
-        // image->set_tooltip_text(file->get_basename());
-        // image->show();
-
-        // m_grid.attach(*image, m_column, m_row);
         ++m_column;
-        #if test
-        auto sourcePixbuf = Gdk::Pixbuf::create_from_file(file->get_path());
-        auto sourceWidth = sourcePixbuf->get_width();
-        auto sourceHeight = sourcePixbuf->get_height();
-        auto pixelData = sourcePixbuf->get_pixels();
-        auto pixelLen = sourceWidth * sourceHeight;
-        // pixels.erase(
-        //     std::remove_if(pixels.begin(), pixels.end(), [](const guint8 &byte) {
-        //         // return byte == 0x00;
-        //         return false;
-        //     })
-        // , pixels.end());
-        // for (auto &pixel : pixels) {
-        //     printf("%02X ", pixel);
-        // }
-        // printf("\n");
-        auto pixbuf = Gdk::Pixbuf::create_from_data(pixelData, sourcePixbuf->get_colorspace(), sourcePixbuf->get_has_alpha(), sourcePixbuf->get_bits_per_sample(), sourceWidth, sourceHeight, sourcePixbuf->get_rowstride());
-        auto image = Gtk::make_managed<Gtk::Image>(pixbuf);
-        image->set_tooltip_text(file->get_basename());
-        image->show();
-
-        m_grid.attach(*image, m_column, m_row);
-        ++m_column;
-        #endif
     }
 
     ++m_row;

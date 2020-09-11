@@ -6,10 +6,18 @@
 #include <gtkmm-3.0/gtkmm/button.h>
 #include <SpriteGrid.h>
 
+struct FileState
+{
+    bool isOpen;
+    Glib::ustring title;
+    std::string path;
+    std::string recentDirectory;
+};
+
 class SpritePackerWindow : public Gtk::Window
 {
 private:
-    Glib::ustring m_fileTitle;
+    FileState m_fileState;
     Gtk::Button m_button;
     Gtk::Button m_addButton;
     Gtk::Button m_openButton;

@@ -1,6 +1,11 @@
 #include <Sprite.h>
 #include <iostream>
 
+struct Rectangle
+{
+    int top, left, right, bottom;
+};
+
 Sprite::Sprite(const std::string &path, const Glib::ustring &name, const int x, const int y)
 {
     position(x, y);
@@ -11,19 +16,55 @@ Sprite::Sprite(const std::string &path, const Glib::ustring &name, const int x, 
 
     auto pixelData = sourcePixbuf->get_pixels();
 
+    Rectangle bounds = {-1, -1, -1, -1};
+
     for (int py = 0; py < sourceHeight; ++py) {
         for (int px = 0; px < sourceWidth; ++px) {
             int offset = py * sourcePixbuf->get_rowstride() + px * sourcePixbuf->get_n_channels();
             auto pixel = &pixelData[offset];
 
-            printf("(%i, %i, %i, %i)\n", pixel[0], pixel[1], pixel[2], pixel[3]);
-            if (pixel[3] < 255) {
-                pixel[3] = 100;
+            if (pixel[3] > 0) {
+                if (bounds.top == -1) {
+                    bounds.top = py;
+                }
+
+                if (bounds.left == -1) {
+                    bounds.left = px;
+                }
+                else if (px < bounds.left) {
+                    bounds.left = px;
+                }
+
+                if (bounds.right == -1) {
+                    bounds.right = px;
+                }
+                else if (bounds.right < px) {
+                    bounds.right = px;
+                }
+
+                if (bounds.bottom == -1) {
+                    bounds.bottom = py;
+                }
+                else if (bounds.bottom < py) {
+                    bounds.bottom = py;
+                }
             }
         }
     }
 
-    m_image = Gtk::Image(sourcePixbuf);
+    int trimHeight = bounds.bottom - bounds.top;
+    int trimWidth = bounds.right - bounds.left;
+
+    if (trimWidth > trimHeight) {
+        m_size = trimWidth;
+    }
+    else {
+        m_size = trimHeight;
+    }
+
+    auto pixbuf = Gdk::Pixbuf::create_subpixbuf(sourcePixbuf, bounds.left, bounds.top, trimWidth, trimHeight);
+
+    m_image = Gtk::Image(pixbuf);
 
     set_tooltip_text(name);
 
@@ -53,6 +94,11 @@ const int Sprite::x() const
 const int Sprite::y() const
 {
     return m_y;
+}
+
+const int Sprite::size() const
+{
+    return m_size;
 }
 
 bool Sprite::on_motion_notify(GdkEventMotion *event)
