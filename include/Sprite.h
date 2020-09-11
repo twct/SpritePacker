@@ -9,7 +9,7 @@ class Sprite : public Gtk::Box
 {
 private:
     Gtk::Image m_image;
-    int m_x, m_y, m_size;
+    int m_x, m_y, m_size, m_width, m_height;
 public:
     Sprite(const std::string &path, const Glib::ustring &name, const int x, const int y);
     Gtk::Image *image();
@@ -17,6 +17,8 @@ public:
     const int x() const;
     const int y() const;
     const int size() const;
+    const int width() const;
+    const int height() const;
     bool on_motion_notify(GdkEventMotion *event);
 };
 

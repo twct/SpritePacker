@@ -167,8 +167,9 @@ void SpritePackerWindow::on_save_button_clicked()
     for (auto &child : m_grid.grid().get_children()) {
         auto sprite = dynamic_cast<Sprite*>(child);
         auto image = sprite->image();
-        int x = sprite->x() * spriteSize;
-        int y = sprite->y() * spriteSize;
+        // TODO: Add options to snap to center, top, left, bottom, right for x and y
+        int x = (sprite->x() * spriteSize) + ((spriteSize / 2) - (sprite->width() / 2));
+        int y = (sprite->y() * spriteSize) + (spriteSize - sprite->height());
         Gdk::Cairo::set_source_pixbuf(context, image->get_pixbuf(), x, y);
         context->paint();
     }
@@ -176,5 +177,4 @@ void SpritePackerWindow::on_save_button_clicked()
     surface->write_to_png(m_fileState.path);
     m_modified = false;
     set_headerbar_title();
-    std::cout << width << "x" << height << std::endl;
 }
