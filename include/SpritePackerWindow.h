@@ -4,6 +4,7 @@
 #include <gtkmm-3.0/gtkmm/headerbar.h>
 #include <gtkmm-3.0/gtkmm/window.h>
 #include <gtkmm-3.0/gtkmm/button.h>
+#include <SettingsPopover.h>
 #include <SpriteGrid.h>
 
 struct FileState
@@ -24,6 +25,7 @@ private:
     Gtk::Button m_saveButton;
     Gtk::Button m_settingsButton;
     Gtk::HeaderBar m_headerBar;
+    SettingsPopover m_settingsPopover;
     SpriteGrid m_grid;
     bool m_modified;
     void set_headerbar_title();
@@ -34,6 +36,7 @@ public:
     void on_add_button_clicked();
     void on_open_button_clicked();
     void on_save_button_clicked();
+    void on_settings_button_clicked();
 };
 
 #endif

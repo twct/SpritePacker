@@ -30,6 +30,7 @@ SpritePackerWindow::SpritePackerWindow() :
     m_openButton.signal_clicked().connect(sigc::mem_fun(*this, &SpritePackerWindow::on_open_button_clicked));
 
     m_settingsButton.set_image_from_icon_name("open-menu-symbolic");
+    m_settingsButton.signal_clicked().connect(sigc::mem_fun(*this, &SpritePackerWindow::on_settings_button_clicked));
 
     m_headerBar.pack_start(m_addButton);
     m_headerBar.pack_start(m_openButton);
@@ -73,6 +74,13 @@ void SpritePackerWindow::set_headerbar_title()
 
     m_headerBar.set_title(Glib::ustring(oss.str()));
     m_saveButton.set_sensitive(m_modified);
+}
+
+void SpritePackerWindow::on_settings_button_clicked()
+{
+    m_settingsPopover.set_relative_to(m_settingsButton);
+    m_settingsPopover.show_all();
+    m_settingsPopover.popup();
 }
 
 void SpritePackerWindow::on_add_button_clicked()

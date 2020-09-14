@@ -15,6 +15,7 @@ add_executable (${PROJECT_NAME}
     src/Sprite.cpp
     src/SpriteGrid.cpp
     src/SpritePackerWindow.cpp
+    src/SettingsPopover.cpp
 )
 
 target_link_libraries (${PROJECT_NAME}
